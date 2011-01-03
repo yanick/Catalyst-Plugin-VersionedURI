@@ -19,11 +19,19 @@ In C<MyApp.pm>:
 
 C<Catalyst::Plugin::VersionedURI> adds a versioned component
 to uris matching a given set of regular expressions provided in
-the configuration file. This can be useful, mainly, to have the
+the configuration file. In other word, it'll -- for example -- convert
+    
+    /static/images/foo.png
+
+into
+
+    /static/v1.2.3/images/foo.png
+
+This can be useful, mainly, to have the
 static files of a site magically point to a new location upon new
 releases of the application, and thus bypass previously set expiration times.
 
-The versioned component of the uri resolves to C<v>I<MyApp->VERSION()>.
+The versioned component of the uri resolves to C<v>I<$MyApp::VERSION>.
 
 =head1 CONFIGURATION
 
