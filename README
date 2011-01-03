@@ -2,7 +2,7 @@ NAME
     Catalyst::Plugin::VersionedURI - add version component to uris
 
 VERSION
-    version 0.1.0
+    version 1.0.0
 
 SYNOPSIS
     In your config file:
@@ -17,6 +17,13 @@ SYNOPSIS
 
        use Catalyst qw/ VersionedURI /;
 
+    In the Apache config:
+
+        <Directory /home/myapp/static>
+            ExpiresActive on
+            ExpiresDefault "access plus 1 year"
+        </Directory>
+
 DESCRIPTION
     "Catalyst::Plugin::VersionedURI" adds a versioned component to uris
     matching a given set of regular expressions provided in the
@@ -26,13 +33,14 @@ DESCRIPTION
 
     into
 
-        /static/v1.2.3/images/foo.png
+        /static/images/foo.png?v=1.2.3
 
     This can be useful, mainly, to have the static files of a site magically
     point to a new location upon new releases of the application, and thus
     bypass previously set expiration times.
 
-    The versioned component of the uri resolves to "v"*$MyApp::VERSION*.
+    The versioned component of the uri resolves to the version of the
+    application.
 
 CONFIGURATION
   uri
@@ -41,14 +49,30 @@ CONFIGURATION
     regular expressions are implicitly anchored at the beginning of the uri,
     and at the end by a '/'.
 
+  in_path
+    If true, add the versioned element as part of the path (right after the
+    matched uri). If false, the versioned element is added as a query
+    parameter. For example, if we match on '/static', the base uri
+    '/static/foo.png' will resolve to '/static/v1.2.3/foo.png' if 'in_path'
+    is *true*, and '/static/foo.png?v=1.2.3' if *false*.
+
+    Defaults to false.
+
+  param
+    Name of the parameter to be used for the versioned element. Defaults to
+    'v'.
+
+    Not used if *in_path* is set to *true*.
+
 WEB SERVER-SIDE CONFIGURATION
     Of course, the redirection to a versioned uri is a sham to fool the
-    browsers into refreshing their cache. Usually we configure the
-    front-facing web server to point back to the same directory.
+    browsers into refreshing their cache. If the path is modified because
+    *in_path* is set to *true*, it's typical to configure the front-facing
+    web server to point back to the same back-end directory.
 
   Apache
-    Typically, the configuration on the Apache side used in conjecture with
-    this plugin will look like:
+    To munge the paths back to the base directory, the Apache configuration
+    can look like:
 
         <Directory /home/myapp/static>
             RewriteEngine on
@@ -59,17 +83,21 @@ WEB SERVER-SIDE CONFIGURATION
         </Directory>
 
 YOU BROKE MY DEVELOPMENT SERVER, YOU INSENSITIVE CLOD!
-    While the plugin is working fine with a web-server front-end, it's going
-    to seriously cramp your style if you use, for example, the application's
-    standalone server, as now all the newly-versioned uris are not going to
-    resolve to anything. The obvious solution is, well, fairly obvious:
-    remove the VersionedURI configuration stanza from your development
-    configuration file.
+    If *in_path* is set to *true*, while the plugin is working fine with a
+    web-server front-end, it's going to seriously cramp your style if you
+    use, for example, the application's standalone server, as now all the
+    newly-versioned uris are not going to resolve to anything. The obvious
+    solution is, well, fairly obvious: remove the VersionedURI configuration
+    stanza from your development configuration file.
 
     If, for whatever reason, you absolutly want your application to deal
     with the versioned paths with or without the web server front-end, you
     can use Catalyst::Controller::VersionedURI, which will undo what
     "Catalyst::Plugin::VersionedURI" toiled to shoe-horn in.
+
+THANKS
+    Alexander Hartmaier, for pointing out that I don't need to butcher the
+    uri path while adding a query parameter would do just as fine.
 
 SEE ALSO
     Blog entry introducing the module:

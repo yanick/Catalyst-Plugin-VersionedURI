@@ -22,18 +22,19 @@ name: Catalyst-Plugin-VersionedURI
 provides:
   Catalyst::Controller::VersionedURI:
     file: lib/Catalyst/Controller/VersionedURI.pm
-    version: v0.1.0
+    version: v1.0.0
   Catalyst::Plugin::VersionedURI:
     file: lib/Catalyst/Plugin/VersionedURI.pm
-    version: v0.1.0
+    version: v1.0.0
 requires:
   Catalyst::Controller: 0
   Moose: 0
   Moose::Role: 0
+  URI::QueryParam: 0
   perl: 5.10.0
 resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Catalyst-Plugin-VersionedURI
   homepage: http://search.cpan.org/dist/Catalyst-Plugin-VersionedURI/
   repository: git://github.com/yanick/Catalyst-Plugin-VersionedURI.git
-version: 0.1.0
+version: 1.0.0
 x_authority: cpan:yanick

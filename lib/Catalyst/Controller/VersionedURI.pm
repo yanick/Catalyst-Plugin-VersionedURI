@@ -3,7 +3,7 @@ BEGIN {
   $Catalyst::Controller::VersionedURI::AUTHORITY = 'cpan:yanick';
 }
 BEGIN {
-  $Catalyst::Controller::VersionedURI::VERSION = '0.1.0';
+  $Catalyst::Controller::VersionedURI::VERSION = '1.0.0';
 }
 # ABSTRACT: Revert Catalyst::Plugin::VersionedURI's munging
 
@@ -48,7 +48,7 @@ Catalyst::Controller::VersionedURI - Revert Catalyst::Plugin::VersionedURI's mun
 
 =head1 VERSION
 
-version 0.1.0
+version 1.0.0
 
 =head1 SYNOPSIS
 
@@ -61,7 +61,8 @@ version 0.1.0
 =head1 DESCRIPTION
 
 This controller creates actions to catch the 
-versioned uris created by C<Catalyst::Plugin::VersionedURI>.
+versioned uris created by C<Catalyst::Plugin::VersionedURI>
+with the I<in_path> parameter set to I<true>.
 
 =head1 SEE ALSO
 

@@ -23,7 +23,7 @@ my %module_build_args = (
     'Yanick Champoux <yanick@babyl.dyndns.org>'
   ],
   'dist_name' => 'Catalyst-Plugin-VersionedURI',
-  'dist_version' => '0.1.0',
+  'dist_version' => '1.0.0',
   'license' => 'perl',
   'module_name' => 'Catalyst::Plugin::VersionedURI',
   'recommends' => {},
@@ -32,6 +32,7 @@ my %module_build_args = (
     'Catalyst::Controller' => '0',
     'Moose' => '0',
     'Moose::Role' => '0',
+    'URI::QueryParam' => '0',
     'perl' => '5.10.0'
   },
   'script_files' => []

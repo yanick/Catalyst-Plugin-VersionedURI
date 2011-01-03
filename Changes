@@ -1,4 +1,8 @@
 Revision history for Catalyst::Plugin::VersionedURI
 
+1.0.0     2011-01-03 12:50:36 America/Montreal
+    * By default, add the versioned element to the query instead than the
+        path. (thanks to Alexander Hartmaier for pointing that out)
+
 0.1.0     2011-01-02 20:53:11 America/Montreal
     * Initial release.
