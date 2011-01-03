@@ -1,24 +1,12 @@
 package Catalyst::Controller::VersionedURI;
+BEGIN {
+  $Catalyst::Controller::VersionedURI::AUTHORITY = 'cpan:yanick';
+}
+BEGIN {
+  $Catalyst::Controller::VersionedURI::VERSION = '0.1.0';
+}
 # ABSTRACT: Revert Catalyst::Plugin::VersionedURI's munging
 
-=head1 SYNOPSIS
-
-    package MyApp::Controller::VersionedURI;
-
-    use parent 'Catalyst::Controller::VersionedURI';
-
-    1;
-
-=head1 DESCRIPTION
-
-This controller creates actions to catch the 
-versioned uris created by C<Catalyst::Plugin::VersionedURI>.
-
-=head1 SEE ALSO
-
-L<Catalyst::Plugin::VersionedURI>
-
-=cut
 
 use strict;
 use warnings;
@@ -50,3 +38,45 @@ END
 };
 
 1;
+
+__END__
+=pod
+
+=head1 NAME
+
+Catalyst::Controller::VersionedURI - Revert Catalyst::Plugin::VersionedURI's munging
+
+=head1 VERSION
+
+version 0.1.0
+
+=head1 SYNOPSIS
+
+    package MyApp::Controller::VersionedURI;
+
+    use parent 'Catalyst::Controller::VersionedURI';
+
+    1;
+
+=head1 DESCRIPTION
+
+This controller creates actions to catch the 
+versioned uris created by C<Catalyst::Plugin::VersionedURI>.
+
+=head1 SEE ALSO
+
+L<Catalyst::Plugin::VersionedURI>
+
+=head1 AUTHOR
+
+Yanick Champoux <yanick@babyl.dyndns.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2011 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
+

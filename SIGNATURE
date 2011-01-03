@@ -1,0 +1,37 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.64.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 277f8e217146fd35c25e6bd29e61873f4d91a963 Build.PL
+SHA1 991c05a42d294cb6c364a82696b95644e79267e8 Changes
+SHA1 59da7efc4d54fec3810ae9f44a59eb3ee7139957 LICENSE
+SHA1 a8a983d5d121387d7312e11cd413e0e80838442b MANIFEST
+SHA1 8166d0d114aad515a186334e55050aca65277720 META.json
+SHA1 6ca54aeed7457227b017891875d0dc0ffec8800f META.yml
+SHA1 5e68a659d986f5575ea998e87a8dcf05b0d66341 README
+SHA1 59cbf23c9f1f05322937e2efb69293936d91391f dist.ini
+SHA1 801482afb567ec785ad21f391033f924dc520503 lib/Catalyst/Controller/VersionedURI.pm
+SHA1 b284f41e3592c7adc01fcc1352ee275a6fc40f37 lib/Catalyst/Plugin/VersionedURI.pm
+SHA1 050aa113e828a52db3c86065c0c0ed50198b7ce8 t/000-report-versions.t
+SHA1 eccecd5dac8c99bc6325596d0061accdc71f2bd0 t/basic.t
+SHA1 1b6794bfd93029a3ecc4918d5493497a2851a5a3 t/lib/TestApp.pm
+SHA1 026cbb4a1208cc1c8db3a65f0cb2166dee0d85d7 t/lib/TestApp/Controller/Root.pm
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iEYEARECAAYFAk0hLA0ACgkQ34Hwf+GwC4zUVgCeLDrUutyaWQjuPThxe3QQFAjH
+dhUAoI0XasXLJ4KfH3N+ckDOOVaSkcvp
+=XtYF
+-----END PGP SIGNATURE-----

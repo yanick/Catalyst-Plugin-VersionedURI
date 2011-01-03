@@ -1,0 +1,72 @@
+{
+   "abstract" : "add version component to uris",
+   "author" : [
+      "Yanick Champoux <yanick@babyl.dyndns.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 4.102345, CPAN::Meta::Converter version 2.101590",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Catalyst-Plugin-VersionedURI",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "Module::Build" : "0.3601"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0.3601"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Catalyst::Controller" : 0,
+            "Moose" : 0,
+            "Moose::Role" : 0,
+            "perl" : "v5.10.0"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Carp" : 0,
+            "Catalyst" : 0,
+            "Scalar::Util" : 0,
+            "Test::More" : "0.94",
+            "Test::WWW::Mechanize::Catalyst" : 0,
+            "parent" : 0
+         }
+      }
+   },
+   "provides" : {
+      "Catalyst::Controller::VersionedURI" : {
+         "file" : "lib/Catalyst/Controller/VersionedURI.pm",
+         "version" : "v0.1.0"
+      },
+      "Catalyst::Plugin::VersionedURI" : {
+         "file" : "lib/Catalyst/Plugin/VersionedURI.pm",
+         "version" : "v0.1.0"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "mailto" : "bug-catalyst-plugin-versioneduri at rt.cpan.org",
+         "web" : "http://rt.cpan.org/Public/Dist/Display.html?Name=Catalyst-Plugin-VersionedURI"
+      },
+      "homepage" : "http://search.cpan.org/dist/Catalyst-Plugin-VersionedURI/",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/yanick/Catalyst-Plugin-VersionedURI.git",
+         "web" : "http://github.com/yanick/Catalyst-Plugin-VersionedURI/tree"
+      }
+   },
+   "version" : "0.1.0",
+   "x_authority" : "cpan:yanick"
+}
+
