@@ -12,7 +12,8 @@ package Catalyst::Controller::VersionedURI;
 =head1 DESCRIPTION
 
 This controller creates actions to catch the 
-versioned uris created by C<Catalyst::Plugin::VersionedURI>.
+versioned uris created by C<Catalyst::Plugin::VersionedURI>
+with the I<in_path> parameter set to I<true>.
 
 =head1 SEE ALSO
 

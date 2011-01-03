@@ -1,4 +1,4 @@
-package TestApp;
+package ParamApp;
 
 use strict;
 use warnings;
@@ -9,8 +9,8 @@ our $VERSION = '1.2.3';
 
 __PACKAGE__->config({
     VersionedURI => {
-        in_path => 1,
-        uri => [ qw# foo/ bar  # ],
+        param => 'version',
+        uri   => [ qw# foo/ bar  # ],
     }
 });
 
