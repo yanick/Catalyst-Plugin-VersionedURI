@@ -1,4 +1,6 @@
 Revision history for Catalyst::Plugin::VersionedURI
 
 {{$NEXT}}
+
+0.1.0     2011-01-02 20:53:11 America/Montreal
     * Initial release.
