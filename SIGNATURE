@@ -14,31 +14,34 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 0a60180d137a04697d671d46f39d04f606e4a1b8 Build.PL
-SHA1 ef6bcc481466bde0d7711d3b1cf8558efab2aeac Changes
+SHA1 7320ab3d68b705d87f3799fa8cf873cee56f2d4c Build.PL
+SHA1 b7ae156590ebc166f150e5b40265b111489ef609 Changes
 SHA1 59da7efc4d54fec3810ae9f44a59eb3ee7139957 LICENSE
-SHA1 9c93b14b650deb7a1aabf8dc820e9f8c23cffdfb MANIFEST
-SHA1 9348d98f9e7f632a2f3d08fca2709988939dfac7 META.json
-SHA1 012decbee7332246ce468187e1200abecfa7b129 META.yml
-SHA1 cdb3eacbf05c17243579e801ef7e5645d3776d25 README
-SHA1 42b1446021ba120d49783b722d67febb75577572 README.mkdn
-SHA1 a0ce19d8c530ccf6b9d6f737c2cf566d1b140ffb dist.ini
-SHA1 f0de8a8cf616ad4f5c2bc472969b4a55d41f9b4c lib/Catalyst/Controller/VersionedURI.pm
-SHA1 a94c43e549dd0749676b272a7383b90c913d1108 lib/Catalyst/Plugin/VersionedURI.pm
+SHA1 ccbc2037a72e185ab33e0099f50ad42acbc59700 MANIFEST
+SHA1 82524d42a8e858f4a5da09002c5de3fbc1a84fed META.json
+SHA1 8dbe8696afa48415ca5787152f8e757bbfa9c3bc META.yml
+SHA1 1f8d11f361db66a021db2c4affa1fae6487f5552 README
+SHA1 e122b056ad707a9ff8c4dcb47df7346318559992 README.mkdn
+SHA1 420df15582cdb1f9dc15983fb25a4c133c02d2b5 lib/Catalyst/Controller/VersionedURI.pm
+SHA1 eec13fc010d865a5f41c94f8222755bad16df633 lib/Catalyst/Plugin/VersionedURI.pm
 SHA1 050aa113e828a52db3c86065c0c0ed50198b7ce8 t/000-report-versions.t
 SHA1 3e140cfd0ffc670a2c2d6b9fdd190a789ed30cf5 t/basic.t
 SHA1 eccecd5dac8c99bc6325596d0061accdc71f2bd0 t/in_path.t
 SHA1 19d253ec027512b65f7bee0263a021541ff9987a t/lib/BasicApp.pm
 SHA1 06443f31047d1d23d51d041a0a59cdc6bf6b55b7 t/lib/BasicApp/Controller/Root.pm
+SHA1 71b043c73dae0fc8998ae6605633f9f8150f3c17 t/lib/MTimeApp.pm
+SHA1 6156747daf12301f8949ee23f890af7547d18775 t/lib/MTimeApp/Controller/Root.pm
+SHA1 4e1243bd22c66e76c2ba9eddc1f91394e57f9f83 t/lib/MTimeApp/root/foo/something
 SHA1 0a2602635f5d75c5a03d73aea0debdd9b8388ccb t/lib/ParamApp.pm
 SHA1 999a8edb794b3a4e8acf066c892a6dd29726d00a t/lib/ParamApp/Controller/Root.pm
 SHA1 15522ee06c4d231d575cf6b7bf484a45d9b41bea t/lib/TestApp.pm
 SHA1 026cbb4a1208cc1c8db3a65f0cb2166dee0d85d7 t/lib/TestApp/Controller/Root.pm
+SHA1 498ac5410036150d9daeb47b585e375baaa379c0 t/mtime.t
 SHA1 b95d109961ccd284635aa69faeae54acb8a57bec t/param.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.10 (GNU/Linux)
 
-iEYEARECAAYFAk0iDHQACgkQ34Hwf+GwC4wQVwCgtYisUMH61mToNLTM5eRU/jrT
-IS4AoOYKzW2Qg6WXZC7dZ6IOi3bv07jK
-=GLkI
+iEYEARECAAYFAk1Ql9AACgkQ34Hwf+GwC4zbowCdEPGMiu3ao+M2DKFc3pT2TEs/
+2T4AnR1ygPKnnIl0LD92qZHtZjIOdfl8
+=8ZlC
 -----END PGP SIGNATURE-----

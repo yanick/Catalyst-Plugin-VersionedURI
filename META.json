@@ -29,6 +29,7 @@
             "Catalyst::Controller" : 0,
             "Moose" : 0,
             "Moose::Role" : 0,
+            "Path::Class" : 0,
             "URI::QueryParam" : 0,
             "perl" : "v5.10.0"
          }
@@ -47,11 +48,11 @@
    "provides" : {
       "Catalyst::Controller::VersionedURI" : {
          "file" : "lib/Catalyst/Controller/VersionedURI.pm",
-         "version" : "v1.0.0"
+         "version" : "v1.1.0"
       },
       "Catalyst::Plugin::VersionedURI" : {
          "file" : "lib/Catalyst/Plugin/VersionedURI.pm",
-         "version" : "v1.0.0"
+         "version" : "v1.1.0"
       }
    },
    "release_status" : "stable",
@@ -67,7 +68,7 @@
          "web" : "http://github.com/yanick/Catalyst-Plugin-VersionedURI/tree"
       }
    },
-   "version" : "1.0.0",
+   "version" : "1.1.0",
    "x_authority" : "cpan:yanick"
 }
 

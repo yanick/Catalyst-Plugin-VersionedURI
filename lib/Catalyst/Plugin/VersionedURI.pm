@@ -3,7 +3,7 @@ BEGIN {
   $Catalyst::Plugin::VersionedURI::AUTHORITY = 'cpan:yanick';
 }
 BEGIN {
-  $Catalyst::Plugin::VersionedURI::VERSION = '1.0.0';
+  $Catalyst::Plugin::VersionedURI::VERSION = '1.1.0';
 }
 # ABSTRACT: add version component to uris
 
@@ -15,6 +15,7 @@ use warnings;
 
 use Moose::Role;
 use URI::QueryParam;
+use Path::Class;
 
 our @uris;
 
@@ -37,6 +38,37 @@ sub versioned_uri_regex {
     return $uris_re;
 }
 
+sub uri_version {
+    my ( $self, $uri ) = @_;
+
+    state $app_version = $self->VERSION;
+
+    return $app_version unless state $mtime = $self->config->{VersionedURI}{mtime};
+        
+    state %cache;  # Would be nice to make this shared across processes
+
+    # Return the cached value if there is one
+    return $cache{$uri} if defined $cache{$uri};
+
+    # Strip off the request base, so we can find the file referenced
+    ( my $file = $uri ) =~ s/^\Q@{[ $self->req->base ]}\E//;
+
+    # Search the include_path(s) provided in config or the
+    # project root if no include_path was specified
+    state $include_paths = 
+        $self->config->{VersionedURI}{include_path} //
+        [ $self->config->{root} ];
+
+    # Return/cache the file's mtime
+    for my $path ( map { file( $_, $file ) } @$include_paths ) {
+        return $cache{$uri} = $path->stat->mtime if -f $path;
+    }
+
+    # No file was found. Store and return the application's version as
+    # a fallback.
+    return $cache{$uri} = $app_version;
+}
+
 around uri_for => sub {
     my ( $code, $self, @args ) = @_;
 
@@ -50,7 +82,7 @@ around uri_for => sub {
 
     return $uri unless $$uri =~  m#(^\Q$base\E$uris_re)#;
 
-    state $version = $self->VERSION;
+    my $version = $self->uri_version( $uri, @args );
 
     if ( state $in_path = $self->config->{VersionedURI}{in_path} ) {
         $$uri =~ s#(^\Q$base\E$uris_re)#${1}v$version/#;
@@ -75,14 +107,15 @@ Catalyst::Plugin::VersionedURI - add version component to uris
 
 =head1 VERSION
 
-version 1.0.0
+version 1.1.0
 
 =head1 SYNOPSIS
 
 In your config file:
 
     <VersionedURI>
-        uri  static/
+        uri   static/
+        mtime 0 
     </VersionedURI>
 
 In C<MyApp.pm>:
@@ -124,6 +157,21 @@ The plugin's accepts any number of C<uri> configuration elements, which are
 taken as regular expressions to be matched against the uris. The regular
 expressions are implicitly anchored at the beginning of the uri, and at the
 end by a '/'. 
+
+=head2 mtime
+
+If set to a true value, the plugin will use the file's modification time for
+versioning instead of the application's version. The modification time is
+checked only once for each file. If a file is changed after the application is
+started, the old version number will continue to be used. Checking the
+modification time on each uri, each time it is served, would result in
+considerable additional overhead.
+
+=head2 include_path
+
+A list of directories to search for files if you specify the C<mtime> flag.
+If no file is found, the application version is used.  Defaults to
+C<MyApp->config->{root}>. 
 
 =head2 in_path
 
@@ -177,8 +225,7 @@ C<Catalyst::Plugin::VersionedURI> toiled to shoe-horn in.
 
 =head1 THANKS
 
-Alexander Hartmaier, for pointing out that I don't need to butcher the uri
-path while adding a query parameter would do just as fine.
+Alexander Hartmaier, mvgrimes.
 
 =head1 SEE ALSO
 

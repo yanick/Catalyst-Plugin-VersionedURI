@@ -2,13 +2,14 @@ NAME
     Catalyst::Plugin::VersionedURI - add version component to uris
 
 VERSION
-    version 1.0.0
+    version 1.1.0
 
 SYNOPSIS
     In your config file:
 
         <VersionedURI>
-            uri  static/
+            uri   static/
+            mtime 0 
         </VersionedURI>
 
     In "MyApp.pm":
@@ -48,6 +49,19 @@ CONFIGURATION
     are taken as regular expressions to be matched against the uris. The
     regular expressions are implicitly anchored at the beginning of the uri,
     and at the end by a '/'.
+
+  mtime
+    If set to a true value, the plugin will use the file's modification time
+    for versioning instead of the application's version. The modification
+    time is checked only once for each file. If a file is changed after the
+    application is started, the old version number will continue to be used.
+    Checking the modification time on each uri, each time it is served,
+    would result in considerable additional overhead.
+
+  include_path
+    A list of directories to search for files if you specify the "mtime"
+    flag. If no file is found, the application version is used. Defaults to
+    "MyApp-"config->{root}>.
 
   in_path
     If true, add the versioned element as part of the path (right after the
@@ -96,8 +110,7 @@ YOU BROKE MY DEVELOPMENT SERVER, YOU INSENSITIVE CLOD!
     "Catalyst::Plugin::VersionedURI" toiled to shoe-horn in.
 
 THANKS
-    Alexander Hartmaier, for pointing out that I don't need to butcher the
-    uri path while adding a query parameter would do just as fine.
+    Alexander Hartmaier, mvgrimes.
 
 SEE ALSO
     Blog entry introducing the module:
