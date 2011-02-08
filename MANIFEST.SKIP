@@ -1,3 +1,4 @@
 Catalyst-Plugin-VersionedURI.*
 project.vim
 MANIFEST.SKIP
+dist.ini
