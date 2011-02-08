@@ -7,7 +7,6 @@ META.yml
 README
 README.mkdn
 SIGNATURE
-dist.ini
 lib/Catalyst/Controller/VersionedURI.pm
 lib/Catalyst/Plugin/VersionedURI.pm
 t/000-report-versions.t
@@ -15,8 +14,12 @@ t/basic.t
 t/in_path.t
 t/lib/BasicApp.pm
 t/lib/BasicApp/Controller/Root.pm
+t/lib/MTimeApp.pm
+t/lib/MTimeApp/Controller/Root.pm
+t/lib/MTimeApp/root/foo/something
 t/lib/ParamApp.pm
 t/lib/ParamApp/Controller/Root.pm
 t/lib/TestApp.pm
 t/lib/TestApp/Controller/Root.pm
+t/mtime.t
 t/param.t
