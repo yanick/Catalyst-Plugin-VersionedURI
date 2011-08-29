@@ -221,8 +221,7 @@ around uri_for => sub {
 
 =head1 THANKS
 
-Alexander Hartmaier, mvgrimes.
-
+Mark Grimes, Alexander Hartmaier. 
 
 =head1 SEE ALSO
 
