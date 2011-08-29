@@ -8,7 +8,7 @@ use Catalyst qw/ VersionedURI /;
 our $VERSION = '1.2.3';
 
 __PACKAGE__->config({
-    VersionedURI => {
+    'Plugin::VersionedURI' => {
         param => 'version',
         uri   => [ qw# foo/ bar  # ],
     }

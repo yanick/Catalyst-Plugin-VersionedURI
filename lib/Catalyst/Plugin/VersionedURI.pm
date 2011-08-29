@@ -5,10 +5,10 @@ package Catalyst::Plugin::VersionedURI;
 
 In your config file:
 
-    <VersionedURI>
+    <Plugin::VersionedURI>
         uri   static/
         mtime 0 
-    </VersionedURI>
+    </Plugin::VersionedURI>
 
 In C<MyApp.pm>:
 
@@ -131,7 +131,19 @@ our @uris;
 sub initialize_uri_regex {
     my $self = shift;
 
-    my $conf = $self->config->{VersionedURI}{uri} 
+    if ( not exists $self->config->{'Plugin::VersionedURI'}
+         and exists $self->config->{'VersionedURI'} ) {
+        warn <<'END_DEPRECATION';
+Catalyst::Plugin::VersionedURI configuration set under 'VersionedURI' is deprecated
+Please move your configuration to 'Plugin::VersionedURI'
+END_DEPRECATION
+
+        $self->config->{'Plugin::VersionedURI'} 
+            = $self->config->{'VersionedURI'};
+    }
+
+
+    my $conf = $self->config->{'Plugin::VersionedURI'}{uri} 
         || '/static';
 
     @uris = ref($conf) ? @$conf : ( $conf );
@@ -152,7 +164,8 @@ sub uri_version {
 
     state $app_version = $self->VERSION;
 
-    return $app_version unless state $mtime = $self->config->{VersionedURI}{mtime};
+    return $app_version 
+        unless state $mtime = $self->config->{'Plugin::VersionedURI'}{mtime};
         
     state %cache;  # Would be nice to make this shared across processes
 
@@ -165,7 +178,7 @@ sub uri_version {
     # Search the include_path(s) provided in config or the
     # project root if no include_path was specified
     state $include_paths = 
-        $self->config->{VersionedURI}{include_path} //
+        $self->config->{'Plugin::VersionedURI'}{include_path} //
         [ $self->config->{root} ];
 
     # Return/cache the file's mtime
@@ -193,11 +206,11 @@ around uri_for => sub {
 
     my $version = $self->uri_version( $uri, @args );
 
-    if ( state $in_path = $self->config->{VersionedURI}{in_path} ) {
+    if ( state $in_path = $self->config->{'Plugin::VersionedURI'}{in_path} ) {
         $$uri =~ s#(^\Q$base\E$uris_re)#${1}v$version/#;
     } 
     else {
-        state $version_name = $self->config->{VersionedURI}{param} || 'v';
+        state $version_name = $self->config->{'Plugin::VersionedURI'}{param} || 'v';
         $uri->query_param( $version_name => $version );
     }
 
