@@ -26,12 +26,12 @@ In the Apache config:
 =head1 DESCRIPTION
 
 C<Catalyst::Plugin::VersionedURI> adds a versioned component
-to uris matching a given set of regular expressions provided in
-the configuration file. In other word, it'll -- for example -- convert
+to uris returned by C<uri_for()> matching a given set of regular expressions provided in
+the configuration file. E.g.,
 
-    /static/images/foo.png
+    $c->uri_for( '/static/images/foo.png' );
 
-into
+will, with the configuration used in the L<SYNOPSIS> return
 
     /static/images/foo.png?v=1.2.3
 
@@ -48,7 +48,7 @@ The versioned component of the uri resolves to the version of the application.
 The plugin's accepts any number of C<uri> configuration elements, which are 
 taken as regular expressions to be matched against the uris. The regular
 expressions are implicitly anchored at the beginning of the uri, and at the
-end by a '/'. 
+end by a '/'.  If not given, defaults to C</static>.
 
 =head2 mtime
 
@@ -132,7 +132,7 @@ sub initialize_uri_regex {
     my $self = shift;
 
     my $conf = $self->config->{VersionedURI}{uri} 
-        or return;
+        || '/static';
 
     @uris = ref($conf) ? @$conf : ( $conf );
     s#^/## for @uris;
