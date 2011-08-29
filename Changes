@@ -1,12 +1,16 @@
 Revision history for Catalyst::Plugin::VersionedURI
 
-1.1.0     2011-02-07 20:09:28 America/Montreal
-    * the version token can now be generated from the mtime of the file.
-        (thanks to mvgrimes for the patch)
+1.1.1 2011-08-29
+ - 'uri' now defaults to '/static'
 
-1.0.0     2011-01-03 12:50:36 America/Montreal
-    * By default, add the versioned element to the query instead than the
-        path. (thanks to Alexander Hartmaier for pointing that out)
+1.1.0 2011-02-07
+ - the version token can now be generated from the mtime of the file.
+   (thanks to mvgrimes for the patch)
 
-0.1.0     2011-01-02 20:53:11 America/Montreal
-    * Initial release.
+1.0.0 2011-01-03
+ - By default, add the versioned element to the query instead than the
+   path. (thanks to Alexander Hartmaier for pointing that out)
+
+0.1.0 2011-01-02
+ - Initial release.
+

@@ -3,7 +3,7 @@ BEGIN {
   $Catalyst::Controller::VersionedURI::AUTHORITY = 'cpan:yanick';
 }
 BEGIN {
-  $Catalyst::Controller::VersionedURI::VERSION = '1.1.0';
+  $Catalyst::Controller::VersionedURI::VERSION = '1.1.1';
 }
 # ABSTRACT: Revert Catalyst::Plugin::VersionedURI's munging
 
@@ -48,7 +48,7 @@ Catalyst::Controller::VersionedURI - Revert Catalyst::Plugin::VersionedURI's mun
 
 =head1 VERSION
 
-version 1.1.0
+version 1.1.1
 
 =head1 SYNOPSIS
 

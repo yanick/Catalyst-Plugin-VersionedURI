@@ -3,7 +3,7 @@ BEGIN {
   $Catalyst::Plugin::VersionedURI::AUTHORITY = 'cpan:yanick';
 }
 BEGIN {
-  $Catalyst::Plugin::VersionedURI::VERSION = '1.1.0';
+  $Catalyst::Plugin::VersionedURI::VERSION = '1.1.1';
 }
 # ABSTRACT: add version component to uris
 
@@ -22,8 +22,20 @@ our @uris;
 sub initialize_uri_regex {
     my $self = shift;
 
-    my $conf = $self->config->{VersionedURI}{uri} 
-        or return;
+    if ( not exists $self->config->{'Plugin::VersionedURI'}
+         and exists $self->config->{'VersionedURI'} ) {
+        warn <<'END_DEPRECATION';
+Catalyst::Plugin::VersionedURI configuration set under 'VersionedURI' is deprecated
+Please move your configuration to 'Plugin::VersionedURI'
+END_DEPRECATION
+
+        $self->config->{'Plugin::VersionedURI'} 
+            = $self->config->{'VersionedURI'};
+    }
+
+
+    my $conf = $self->config->{'Plugin::VersionedURI'}{uri} 
+        || '/static';
 
     @uris = ref($conf) ? @$conf : ( $conf );
     s#^/## for @uris;
@@ -43,7 +55,8 @@ sub uri_version {
 
     state $app_version = $self->VERSION;
 
-    return $app_version unless state $mtime = $self->config->{VersionedURI}{mtime};
+    return $app_version 
+        unless state $mtime = $self->config->{'Plugin::VersionedURI'}{mtime};
         
     state %cache;  # Would be nice to make this shared across processes
 
@@ -56,7 +69,7 @@ sub uri_version {
     # Search the include_path(s) provided in config or the
     # project root if no include_path was specified
     state $include_paths = 
-        $self->config->{VersionedURI}{include_path} //
+        $self->config->{'Plugin::VersionedURI'}{include_path} //
         [ $self->config->{root} ];
 
     # Return/cache the file's mtime
@@ -84,11 +97,11 @@ around uri_for => sub {
 
     my $version = $self->uri_version( $uri, @args );
 
-    if ( state $in_path = $self->config->{VersionedURI}{in_path} ) {
+    if ( state $in_path = $self->config->{'Plugin::VersionedURI'}{in_path} ) {
         $$uri =~ s#(^\Q$base\E$uris_re)#${1}v$version/#;
     } 
     else {
-        state $version_name = $self->config->{VersionedURI}{param} || 'v';
+        state $version_name = $self->config->{'Plugin::VersionedURI'}{param} || 'v';
         $uri->query_param( $version_name => $version );
     }
 
@@ -107,16 +120,16 @@ Catalyst::Plugin::VersionedURI - add version component to uris
 
 =head1 VERSION
 
-version 1.1.0
+version 1.1.1
 
 =head1 SYNOPSIS
 
 In your config file:
 
-    <VersionedURI>
+    <Plugin::VersionedURI>
         uri   static/
         mtime 0 
-    </VersionedURI>
+    </Plugin::VersionedURI>
 
 In C<MyApp.pm>:
 
@@ -134,12 +147,12 @@ In the Apache config:
 =head1 DESCRIPTION
 
 C<Catalyst::Plugin::VersionedURI> adds a versioned component
-to uris matching a given set of regular expressions provided in
-the configuration file. In other word, it'll -- for example -- convert
+to uris returned by C<uri_for()> matching a given set of regular expressions provided in
+the configuration file. E.g.,
 
-    /static/images/foo.png
+    $c->uri_for( '/static/images/foo.png' );
 
-into
+will, with the configuration used in the L<SYNOPSIS> return
 
     /static/images/foo.png?v=1.2.3
 
@@ -156,7 +169,7 @@ The versioned component of the uri resolves to the version of the application.
 The plugin's accepts any number of C<uri> configuration elements, which are 
 taken as regular expressions to be matched against the uris. The regular
 expressions are implicitly anchored at the beginning of the uri, and at the
-end by a '/'. 
+end by a '/'.  If not given, defaults to C</static>.
 
 =head2 mtime
 
@@ -225,7 +238,7 @@ C<Catalyst::Plugin::VersionedURI> toiled to shoe-horn in.
 
 =head1 THANKS
 
-Alexander Hartmaier, mvgrimes.
+Mark Grimes, Alexander Hartmaier. 
 
 =head1 SEE ALSO
 

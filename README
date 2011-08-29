@@ -2,15 +2,15 @@ NAME
     Catalyst::Plugin::VersionedURI - add version component to uris
 
 VERSION
-    version 1.1.0
+    version 1.1.1
 
 SYNOPSIS
     In your config file:
 
-        <VersionedURI>
+        <Plugin::VersionedURI>
             uri   static/
             mtime 0 
-        </VersionedURI>
+        </Plugin::VersionedURI>
 
     In "MyApp.pm":
 
@@ -27,12 +27,12 @@ SYNOPSIS
 
 DESCRIPTION
     "Catalyst::Plugin::VersionedURI" adds a versioned component to uris
-    matching a given set of regular expressions provided in the
-    configuration file. In other word, it'll -- for example -- convert
+    returned by "uri_for()" matching a given set of regular expressions
+    provided in the configuration file. E.g.,
 
-        /static/images/foo.png
+        $c->uri_for( '/static/images/foo.png' );
 
-    into
+    will, with the configuration used in the SYNOPSIS return
 
         /static/images/foo.png?v=1.2.3
 
@@ -48,7 +48,7 @@ CONFIGURATION
     The plugin's accepts any number of "uri" configuration elements, which
     are taken as regular expressions to be matched against the uris. The
     regular expressions are implicitly anchored at the beginning of the uri,
-    and at the end by a '/'.
+    and at the end by a '/'. If not given, defaults to "/static".
 
   mtime
     If set to a true value, the plugin will use the file's modification time
@@ -110,7 +110,7 @@ YOU BROKE MY DEVELOPMENT SERVER, YOU INSENSITIVE CLOD!
     "Catalyst::Plugin::VersionedURI" toiled to shoe-horn in.
 
 THANKS
-    Alexander Hartmaier, mvgrimes.
+    Mark Grimes, Alexander Hartmaier.
 
 SEE ALSO
     Blog entry introducing the module:
