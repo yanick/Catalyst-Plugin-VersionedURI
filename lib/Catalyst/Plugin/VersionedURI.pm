@@ -124,7 +124,7 @@ use warnings;
 
 use Moose::Role;
 use URI::QueryParam;
-use Path::Class;
+use Path::Tiny;
 
 our @uris;
 
@@ -182,7 +182,7 @@ sub uri_version {
         [ $self->config->{root} ];
 
     # Return/cache the file's mtime
-    for my $path ( map { file( $_, $file ) } @$include_paths ) {
+    for my $path ( map { path( $_, $file ) } @$include_paths ) {
         return $cache{$uri} = $path->stat->mtime if -f $path;
     }
 

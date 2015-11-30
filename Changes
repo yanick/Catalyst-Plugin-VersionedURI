@@ -3,6 +3,7 @@ Revision history for Catalyst::Plugin::VersionedURI
 {{$NEXT}}
   - Now use 'Catalyst::DispatchType::Regex'
     explicitly to placate the deprecation notice.
+  - Use Path::Tiny instead of Path::Class.
 
  [API CHANGES]
 
