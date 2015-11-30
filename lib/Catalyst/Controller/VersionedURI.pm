@@ -26,6 +26,8 @@ use warnings;
 
 use Moose;
 
+use Catalyst::DispatchType::Regex;
+
 BEGIN { extends 'Catalyst::Controller' }
 
 after BUILDALL => sub {
