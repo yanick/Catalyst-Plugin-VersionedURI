@@ -8,6 +8,7 @@ Revision history for Catalyst::Plugin::VersionedURI
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
+  - Only utilize public methods when interacting with URI (GH#2, Mark Grimes)
 
   [ NEW FEATURES ]
 
