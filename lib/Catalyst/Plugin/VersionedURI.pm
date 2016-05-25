@@ -1,5 +1,122 @@
 package Catalyst::Plugin::VersionedURI;
+our $AUTHORITY = 'cpan:YANICK';
 # ABSTRACT: add version component to uris
+$Catalyst::Plugin::VersionedURI::VERSION = '1.2.0';
+
+use 5.10.0;
+
+use strict;
+use warnings;
+
+use Moose::Role;
+use URI::QueryParam;
+use Path::Tiny;
+
+our @uris;
+
+sub initialize_uri_regex {
+    my $self = shift;
+
+    if ( not exists $self->config->{'Plugin::VersionedURI'}
+         and exists $self->config->{'VersionedURI'} ) {
+        warn <<'END_DEPRECATION';
+Catalyst::Plugin::VersionedURI configuration set under 'VersionedURI' is deprecated
+Please move your configuration to 'Plugin::VersionedURI'
+END_DEPRECATION
+
+        $self->config->{'Plugin::VersionedURI'} 
+            = $self->config->{'VersionedURI'};
+    }
+
+
+    my $conf = $self->config->{'Plugin::VersionedURI'}{uri} 
+        || '/static';
+
+    @uris = ref($conf) ? @$conf : ( $conf );
+    s#^/## for @uris;
+    s#(?<!/)$#/# for @uris;
+
+    return join '|', @uris;
+}
+
+sub versioned_uri_regex {
+    my $self = shift;
+    state $uris_re = $self->initialize_uri_regex;
+    return $uris_re;
+}
+
+sub uri_version {
+    my ( $self, $uri ) = @_;
+
+    state $app_version = $self->VERSION;
+
+    return $app_version 
+        unless state $mtime = $self->config->{'Plugin::VersionedURI'}{mtime};
+        
+    state %cache;  # Would be nice to make this shared across processes
+
+    # Return the cached value if there is one
+    return $cache{$uri} if defined $cache{$uri};
+
+    # Strip off the request base, so we can find the file referenced
+    ( my $file = $uri ) =~ s/^\Q@{[ $self->req->base ]}\E//;
+
+    # Search the include_path(s) provided in config or the
+    # project root if no include_path was specified
+    state $include_paths = 
+        $self->config->{'Plugin::VersionedURI'}{include_path} //
+        [ $self->config->{root} ];
+
+    # Return/cache the file's mtime
+    for my $path ( map { path( $_, $file ) } @$include_paths ) {
+        return $cache{$uri} = $path->stat->mtime if -f $path;
+    }
+
+    # No file was found. Store and return the application's version as
+    # a fallback.
+    return $cache{$uri} = $app_version;
+}
+
+around uri_for => sub {
+    my ( $code, $self, @args ) = @_;
+
+    my $uri = $self->$code(@args);
+
+    my $uris_re = $self->versioned_uri_regex
+        or return $uri;
+
+    return $uri unless $uri->path =~ m#^/($uris_re)#;
+
+    my $version = $self->uri_version( $uri, @args );
+
+    if ( state $in_path = $self->config->{'Plugin::VersionedURI'}{in_path} ) {
+        my $path = $uri->path;
+        $path =~ s#^/($uris_re)#${1}v$version/#;
+        $uri->path( $path );
+    } 
+    else {
+        state $version_name = $self->config->{'Plugin::VersionedURI'}{param} || 'v';
+        $uri->query_param( $version_name => $version );
+    }
+
+    return $uri;
+};
+
+1;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Catalyst::Plugin::VersionedURI - add version component to uris
+
+=head1 VERSION
+
+version 1.2.0
 
 =head1 SYNOPSIS
 
@@ -115,109 +232,6 @@ paths with or without the web server front-end, you can use
 L<Catalyst::Controller::VersionedURI>, which will undo what
 C<Catalyst::Plugin::VersionedURI> toiled to shoe-horn in.
 
-=cut
-
-use 5.10.0;
-
-use strict;
-use warnings;
-
-use Moose::Role;
-use URI::QueryParam;
-use Path::Tiny;
-
-our @uris;
-
-sub initialize_uri_regex {
-    my $self = shift;
-
-    if ( not exists $self->config->{'Plugin::VersionedURI'}
-         and exists $self->config->{'VersionedURI'} ) {
-        warn <<'END_DEPRECATION';
-Catalyst::Plugin::VersionedURI configuration set under 'VersionedURI' is deprecated
-Please move your configuration to 'Plugin::VersionedURI'
-END_DEPRECATION
-
-        $self->config->{'Plugin::VersionedURI'} 
-            = $self->config->{'VersionedURI'};
-    }
-
-
-    my $conf = $self->config->{'Plugin::VersionedURI'}{uri} 
-        || '/static';
-
-    @uris = ref($conf) ? @$conf : ( $conf );
-    s#^/## for @uris;
-    s#(?<!/)$#/# for @uris;
-
-    return join '|', @uris;
-}
-
-sub versioned_uri_regex {
-    my $self = shift;
-    state $uris_re = $self->initialize_uri_regex;
-    return $uris_re;
-}
-
-sub uri_version {
-    my ( $self, $uri ) = @_;
-
-    state $app_version = $self->VERSION;
-
-    return $app_version 
-        unless state $mtime = $self->config->{'Plugin::VersionedURI'}{mtime};
-        
-    state %cache;  # Would be nice to make this shared across processes
-
-    # Return the cached value if there is one
-    return $cache{$uri} if defined $cache{$uri};
-
-    # Strip off the request base, so we can find the file referenced
-    ( my $file = $uri ) =~ s/^\Q@{[ $self->req->base ]}\E//;
-
-    # Search the include_path(s) provided in config or the
-    # project root if no include_path was specified
-    state $include_paths = 
-        $self->config->{'Plugin::VersionedURI'}{include_path} //
-        [ $self->config->{root} ];
-
-    # Return/cache the file's mtime
-    for my $path ( map { path( $_, $file ) } @$include_paths ) {
-        return $cache{$uri} = $path->stat->mtime if -f $path;
-    }
-
-    # No file was found. Store and return the application's version as
-    # a fallback.
-    return $cache{$uri} = $app_version;
-}
-
-around uri_for => sub {
-    my ( $code, $self, @args ) = @_;
-
-    my $uri = $self->$code(@args);
-
-    my $uris_re = $self->versioned_uri_regex
-        or return $uri;
-
-    return $uri unless $uri->path =~ m#^/($uris_re)#;
-
-    my $version = $self->uri_version( $uri, @args );
-
-    if ( state $in_path = $self->config->{'Plugin::VersionedURI'}{in_path} ) {
-        my $path = $uri->path;
-        $path =~ s#^/($uris_re)#${1}v$version/#;
-        $uri->path( $path );
-    } 
-    else {
-        state $version_name = $self->config->{'Plugin::VersionedURI'}{param} || 'v';
-        $uri->query_param( $version_name => $version );
-    }
-
-    return $uri;
-};
-
-1;
-
 =head1 THANKS
 
 Mark Grimes, Alexander Hartmaier. 
@@ -232,3 +246,15 @@ Mark Grimes, Alexander Hartmaier.
 
 =back
 
+=head1 AUTHOR
+
+Yanick Champoux <yanick@babyl.dyndns.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2011 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
