@@ -199,15 +199,14 @@ around uri_for => sub {
     my $uris_re = $self->versioned_uri_regex
         or return $uri;
 
-    my $base = $self->req->base;
-    $base =~ s#(?<!/)$#/#;  # add trailing '/'
-
-    return $uri unless $$uri =~  m#(^\Q$base\E$uris_re)#;
+    return $uri unless $uri->path =~ m#^/($uris_re)#;
 
     my $version = $self->uri_version( $uri, @args );
 
     if ( state $in_path = $self->config->{'Plugin::VersionedURI'}{in_path} ) {
-        $$uri =~ s#(^\Q$base\E$uris_re)#${1}v$version/#;
+        my $path = $uri->path;
+        $path =~ s#^/($uris_re)#${1}v$version/#;
+        $uri->path( $path );
     } 
     else {
         state $version_name = $self->config->{'Plugin::VersionedURI'}{param} || 'v';
